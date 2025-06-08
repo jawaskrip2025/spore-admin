@@ -1,16 +1,21 @@
+import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/providers/theme-provider";
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Exo_2, Open_Sans } from "next/font/google";
 import "./globals.css";
+import NextTopLoader from "nextjs-toploader";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+import ContextProvider from "@/providers/context-provider";
+
+const openSans = Open_Sans({
+  subsets: ['latin'],
+  variable: '--font-open-sans',
+  weight: ['300', '400', '500', '600', '700', '800'],
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const exo2 = Exo_2({
+  subsets: ['latin'],
+  variable: '--font-exo2',
+  weight: ['400', '500', '600', '700', '800'],
 });
 
 export const metadata: Metadata = {
@@ -23,12 +28,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${openSans.className} ${exo2.variable} antialiased`}
       >
-        {children}
+        <NextTopLoader initialPosition={0.2} color="#888" />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ContextProvider>
+            {children}
+          </ContextProvider>
+          <Toaster richColors />
+        </ThemeProvider>
       </body>
     </html>
   );
