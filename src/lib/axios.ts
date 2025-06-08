@@ -2,7 +2,7 @@ import axios from "axios";
 
 import Cookies from "js-cookie";
 import { toast } from "sonner";
-const token = Cookies.get("access-token");
+const token = Cookies.get("token");
 export const axiosInstance = axios.create({
   baseURL: `${process.env.BASE_URL}/api/v1`,
   headers: {
@@ -17,7 +17,7 @@ axiosInstance.interceptors.response.use(
   },
   function (error) {
     if (error.response.status === 403) {
-      Cookies.remove("access-token");
+      Cookies.remove("token");
       toast.error('Forbidden', {
         description: 'Access Forbidden'
       })
